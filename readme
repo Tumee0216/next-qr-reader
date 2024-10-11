@@ -1,0 +1,116 @@
+# next-qr-reader
+
+A high-performance, React-based QR code reader component for Next.js applications.
+
+## Features
+
+- Smooth, continuous QR code scanning
+- Optimized for performance using `requestAnimationFrame`
+- Customizable scan interval and camera constraints
+- Error handling with optional callback
+- TypeScript support
+- Easy to integrate with Next.js projects
+
+## Installation
+
+Install the package using npm:
+
+```bash
+npm install next-qr-reader
+```
+
+Or using yarn:
+
+```bash
+yarn add next-qr-reader
+```
+
+## Usage
+
+Here's a basic example of how to use the `Reader` component:
+
+```jsx
+import React from 'react';
+import { Reader } from 'next-qr-reader';
+
+const QRCodeScanner = () => {
+  const handleResult = (result) => {
+    console.log('QR Code scanned:', result);
+  };
+
+  const handleError = (error) => {
+    console.error('QR Code scanning error:', error);
+  };
+
+  return (
+    <Reader
+      onResult={handleResult}
+      onError={handleError}
+      className="w-full max-w-md mx-auto"
+    />
+  );
+};
+
+export default QRCodeScanner;
+```
+
+## API
+
+### `Reader` Component Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `onResult` | `(result: string) => void` | Required | Callback function called when a QR code is successfully scanned |
+| `constraints` | `MediaTrackConstraints` | `{ facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } }` | Camera constraints for `getUserMedia` |
+| `className` | `string` | `''` | Additional CSS classes to apply to the component |
+| `scanInterval` | `number` | `300` | Minimum interval (in ms) between scan attempts |
+| `onError` | `(error: Error) => void` | `undefined` | Callback function called when an error occurs during scanning |
+
+## Advanced Usage
+
+### Custom Camera Constraints
+
+You can customize the camera constraints to fit your needs:
+
+```jsx
+<Reader
+  onResult={handleResult}
+  constraints={{
+    facingMode: 'user',
+    width: { ideal: 1280 },
+    height: { ideal: 720 }
+  }}
+/>
+```
+
+### Error Handling
+
+Implement custom error handling:
+
+```jsx
+const handleError = (error) => {
+  if (error.name === 'NotAllowedError') {
+    alert('Please grant camera permission to use the QR scanner.');
+  } else {
+    console.error('An error occurred:', error);
+  }
+};
+
+<Reader onResult={handleResult} onError={handleError} />
+```
+
+## Browser Support
+
+This component should work in all modern browsers that support the `getUserMedia` API and can run Next.js applications. However, it's always a good idea to check the specific browser requirements for your target audience.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgements
+
+This project uses the [jsQR](https://github.com/cozmo/jsQR) library for QR code detection.
